@@ -26,24 +26,45 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(defvar my/packages
+  '(
+    consult
+    consult-eglot
+    corfu
+    devil
+    flycheck
+    flycheck-eglot
+    go-mode
+    kanagawa-themes
+    marginalia
+    quickrun
+    vertico
+    yasnippet
+    )
+  "List of packages to install if not present".)
+(dolist (pkg my/packages)
+  (unless (package-installed-p pkg)
+    (message "Installing %s..." pkg)
+    (package-install pkg))
+  (require pkg))
 ;; Installing quickrun and other things
-(when (not (package-installed-p 'go-mode))
-  (package-install 'go-mode))
-(when (not (package-installed-p 'consult))
-(package-install 'consult))
-(when (not (package-installed-p 'corfu-candidate-overlay))
-  (package-install 'corfu-candidate-overlay))
-(when (not (package-installed-p 'flycheck-eglot))
-  (package-install 'flycheck-eglot))
-(when (not (package-installed-p 'kanagawa-themes))
-  (package-install 'kanagawa-themes))
-(load-theme 'kanagawa-dragon)
-(when (not (package-installed-p 'quickrun))
-  (package-install 'quickrun))
+;;(when (not (package-installed-p 'go-mode))
+;;  (package-install 'go-mode))
+;;(when (not (package-installed-p 'consult))
+;;(package-install 'consult))
+;;(when (not (package-installed-p 'corfu-candidate-overlay))
+;;  (package-install 'corfu-candidate-overlay))
+;;(when (not (package-installed-p 'flycheck-eglot))
+;;  (package-install 'flycheck-eglot))
+;;(when (not (package-installed-p 'kanagawa-themes))
+;;  (package-install 'kanagawa-themes))
+;;(load-theme 'kanagawa-dragon)
+;;(when (not (package-installed-p 'quickrun))
+;;  (package-install 'quickrun))
 ;; Devil
-(when (not (package-installed-p 'devil))
-	   (package-install 'devil))
-(require 'devil)
+;;(when (not (package-installed-p 'devil))
+;;	   (package-install 'devil))
+;;(require 'devil)
 (global-devil-mode)
 (global-set-key (kbd "C-,") 'global-devil-mode)
 
@@ -68,9 +89,9 @@
 ;; Optional: automatically format Go code using 'gofmt' before saving
 (add-hook 'before-save-hook #'gofmt-before-save)
 ;; Vertico
-(when (not (package-installed-p 'vertico))
-  (package-install 'vertico))
-(require 'vertico)
+;;(when (not (package-installed-p 'vertico))
+;;  (package-install 'vertico))
+;;(require 'vertico)
 (vertico-mode)
 (setq vertico-count 13)
 (setq vertico-cycle nil)
@@ -78,21 +99,21 @@
 (keymap-set vertico-map "?" #'minibuffer-completion-help)
 (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
 (keymap-set vertico-map "M-TAB" #'minibuffer-complete)
-(when (not (package-installed-p 'marginalia))
-  (package-install 'marginalia))
-(require 'marginalia)
+;;(when (not (package-installed-p 'marginalia))
+ ;; (package-install 'marginalia))
+;;;;(require 'marginalia)
 (marginalia-mode)
 ;; Flycheck
-(when (not (package-installed-p 'flycheck))
-  (package-install 'flycheck))
-(require 'flycheck)
+;;(when (not (package-installed-p 'flycheck))
+;;  (package-install 'flycheck))
+;;(require 'flycheck)
 (global-flycheck-mode +1)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 ;; Consult
 ;; Load the consult package after it's installed
-(when (not (package-installed-p 'consult))
-  (package-install 'consult))
-(require 'consult)
+;;(when (not (package-installed-p 'consult))
+;;  (package-install 'consult))
+;;(require 'consult)
 
 ;; Configuration for Consult
 (with-eval-after-load 'consult
@@ -125,7 +146,7 @@
   )
 
 ;; Yasnippet
-(when (not (package-installed-p 'yasnippet))
-  (package-install 'yasnippet))
-(require 'yasnippet)
+;;(when (not (package-installed-p 'yasnippet))
+;;  (package-install 'yasnippet))
+;;(require 'yasnippet)
 (yas-global-mode 1)
