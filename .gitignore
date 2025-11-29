@@ -6,7 +6,8 @@
 .eask/
 .eldev/
 .keg/
-
+elpa/
+eln-cache/
 # Built distribution
 dist/
 
@@ -15,3 +16,9 @@ dist/
 
 # Undo-tree save-files
 *.~undo-tree
+
+
+auto-save-list/
+url/
+transient/
+projectile-bookmarks.eld
