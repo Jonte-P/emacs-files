@@ -26,8 +26,22 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
+;; Installing quickrun and other things
+(when (not (package-installed-p 'go-mode))
+  (package-install 'go-mode))
+(when (not (package-installed-p 'consult))
+(package-install 'consult))
+(when (not (package-installed-p 'corfu-candidate-overlay))
+  (package-install 'corfu-candidate-overlay))
+(when (not (package-installed-p 'flycheck-eglot))
+  (package-install 'flycheck-eglot))
+(when (not (package-installed-p 'kanagawa-themes))
+  (package-install 'kanagawa-themes))
+(when (not (package-installed-p 'quickrun))
+  (package-install 'quickrun))
 ;; Devil
+(when (not (package-installed-p 'devil))
+	   (package-install 'devil))
 (require 'devil)
 (global-devil-mode)
 (global-set-key (kbd "C-,") 'global-devil-mode)
@@ -53,6 +67,8 @@
 ;; Optional: automatically format Go code using 'gofmt' before saving
 (add-hook 'before-save-hook #'gofmt-before-save)
 ;; Vertico
+(when (not (package-installed-p 'vertico))
+  (package-install 'vertico))
 (require 'vertico)
 (vertico-mode)
 (setq vertico-count 13)
@@ -61,15 +77,20 @@
 (keymap-set vertico-map "?" #'minibuffer-completion-help)
 (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
 (keymap-set vertico-map "M-TAB" #'minibuffer-complete)
-
+(when (not (package-installed-p 'marginalia))
+  (package-install 'marginalia))
 (require 'marginalia)
 (marginalia-mode)
 ;; Flycheck
+(when (not (package-installed-p 'flycheck))
+  (package-install 'flycheck))
 (require 'flycheck)
 (global-flycheck-mode +1)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 ;; Consult
 ;; Load the consult package after it's installed
+(when (not (package-installed-p 'consult))
+  (package-install 'consult))
 (require 'consult)
 
 ;; Configuration for Consult
@@ -103,5 +124,7 @@
   )
 
 ;; Yasnippet
+(when (not (package-installed-p 'yasnippet))
+  (package-install 'yasnippet))
 (require 'yasnippet)
 (yas-global-mode 1)
