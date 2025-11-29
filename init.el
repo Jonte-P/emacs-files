@@ -16,55 +16,20 @@
  '(custom-safe-themes
    '("d2ab3d4f005a9ad4fb789a8f65606c72f30ce9d281a9e42da55f7f4b9ef5bfc6"
      default))
- '(package-selected-packages
-   '(consult consult-eglot corfu-candidate-overlay devil flycheck-eglot
-	     go-mode kanagawa-themes marginalia quickrun vertico
-	     yasnippet)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(defvar my/packages
-  '(
-    consult
-    consult-eglot
-    corfu
-    devil
-    flycheck
-    flycheck-eglot
-    go-mode
-    kanagawa-themes
-    marginalia
-    quickrun
-    vertico
-    yasnippet
-    )
-  "List of packages to install if not present".)
-(dolist (pkg my/packages)
+;; Package list
+(defvar my-packages '(consult consult-eglot corfu corfu-candidate-overlay devil flycheck flycheck-eglot go-mode kanagawa-themes marginalia quickrun vertico yasnippet))
+(dolist (pkg my-packages)
   (unless (package-installed-p pkg)
-    (message "Installing %s..." pkg)
     (package-install pkg))
   (require pkg))
-;; Installing quickrun and other things
-;;(when (not (package-installed-p 'go-mode))
-;;  (package-install 'go-mode))
-;;(when (not (package-installed-p 'consult))
-;;(package-install 'consult))
-;;(when (not (package-installed-p 'corfu-candidate-overlay))
-;;  (package-install 'corfu-candidate-overlay))
-;;(when (not (package-installed-p 'flycheck-eglot))
-;;  (package-install 'flycheck-eglot))
-;;(when (not (package-installed-p 'kanagawa-themes))
-;;  (package-install 'kanagawa-themes))
-;;(load-theme 'kanagawa-dragon)
-;;(when (not (package-installed-p 'quickrun))
-;;  (package-install 'quickrun))
-;; Devil
-;;(when (not (package-installed-p 'devil))
-;;	   (package-install 'devil))
-;;(require 'devil)
+
 (global-devil-mode)
 (global-set-key (kbd "C-,") 'global-devil-mode)
 
@@ -88,10 +53,7 @@
 
 ;; Optional: automatically format Go code using 'gofmt' before saving
 (add-hook 'before-save-hook #'gofmt-before-save)
-;; Vertico
-;;(when (not (package-installed-p 'vertico))
-;;  (package-install 'vertico))
-;;(require 'vertico)
+
 (vertico-mode)
 (setq vertico-count 13)
 (setq vertico-cycle nil)
@@ -109,11 +71,6 @@
 ;;(require 'flycheck)
 (global-flycheck-mode +1)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-;; Consult
-;; Load the consult package after it's installed
-;;(when (not (package-installed-p 'consult))
-;;  (package-install 'consult))
-;;(require 'consult)
 
 ;; Configuration for Consult
 (with-eval-after-load 'consult
@@ -145,8 +102,4 @@
   ;;       completion-category-overrides '((file (styles partial-by-ext))))
   )
 
-;; Yasnippet
-;;(when (not (package-installed-p 'yasnippet))
-;;  (package-install 'yasnippet))
-;;(require 'yasnippet)
 (yas-global-mode 1)
