@@ -37,6 +37,7 @@
   (package-install 'flycheck-eglot))
 (when (not (package-installed-p 'kanagawa-themes))
   (package-install 'kanagawa-themes))
+(load-theme 'kanagawa-dragon)
 (when (not (package-installed-p 'quickrun))
   (package-install 'quickrun))
 ;; Devil
