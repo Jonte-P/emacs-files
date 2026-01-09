@@ -64,7 +64,7 @@ missing packages from `my-packages`."
   :type 'boolean
   :group 'jp)
 
-(defcustom jp/enable-common-lisp nil
+(defcustom jp/enable-common-lisp t
   "Enable Common Lisp tooling (SLIME/SLY, etc.)."
   :type 'boolean
   :group 'jp)
@@ -256,11 +256,6 @@ missing packages from `my-packages`."
     (slime-setup '(slime-fancy))
     :bind (:map lisp-mode-map
                 ("C-c C-z" . slime-switch-to-output-buffer))))
-(when jp/enable-common-lisp
-  (use-package paredit :ensure t :hook ((emacs-lisp-mode lisp-mode) . paredit-mode))
-  (use-package rainbow-delimiters :ensure t :hook ((emacs-lisp-mode lisp-mode) . rainbow-delimiters-mode)))
-
-
 
 ;;; ============================
 ;;; Custom (managed by Emacs)
@@ -275,6 +270,7 @@ missing packages from `my-packages`."
  '(custom-safe-themes
    '("d2ab3d4f005a9ad4fb789a8f65606c72f30ce9d281a9e42da55f7f4b9ef5bfc6"
      default))
+ '(jp/enable-common-lisp t)
  '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((ekilex :vc-backend Git :url "https://github.com/Jonte-P/ekilex.el"))))
