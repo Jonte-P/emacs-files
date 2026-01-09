@@ -58,6 +58,17 @@
 missing packages from `my-packages`."
   :type 'boolean
   :group 'jp)
+;; --- ekilex toggle
+(defcustom jp/enable-ekilex t
+  "Enable Ekilex integration."
+  :type 'boolean
+  :group 'jp)
+
+(defcustom jp/enable-common-lisp nil
+  "Enable Common Lisp tooling (SLIME/SLY, etc.)."
+  :type 'boolean
+  :group 'jp)
+
 
 ;;; ============================
 ;;; Package setup
@@ -212,6 +223,45 @@ missing packages from `my-packages`."
 (when jp/use-yasnippet
   (yas-global-mode 1))
 
+
+
+;;; ===========================
+;;; Ekilex
+;;; ===========================
+
+(when jp/enable-ekilex
+  (require 'package-vc) ; built-in in Emacs 29+
+  ;; Install if missing (clones repo into your package dir)
+  (unless (locate-library "ekilex")
+    (package-vc-install "https://github.com/Jonte-P/ekilex.el"))
+  ;; Load it
+  (require 'ekilex)
+  ;; Example: set key + API key (better: set API key via customize)
+  (global-set-key (kbd "C-c e") #'ekilex-lookup-at-point))
+
+
+;;; ===========================
+;;; Lisp
+;;; ===========================
+(when jp/enable-common-lisp
+  (use-package slime
+    :ensure t
+    :init
+    ;; Pick ONE Lisp implementation:
+    ;; SBCL on Linux is common:
+    (setq inferior-lisp-program "sbcl")
+    ;; If you use Roswell:
+    ;; (setq inferior-lisp-program "ros -Q run")
+    :config
+    (slime-setup '(slime-fancy))
+    :bind (:map lisp-mode-map
+                ("C-c C-z" . slime-switch-to-output-buffer))))
+(when jp/enable-common-lisp
+  (use-package paredit :ensure t :hook ((emacs-lisp-mode lisp-mode) . paredit-mode))
+  (use-package rainbow-delimiters :ensure t :hook ((emacs-lisp-mode lisp-mode) . rainbow-delimiters-mode)))
+
+
+
 ;;; ============================
 ;;; Custom (managed by Emacs)
 ;;; ============================
@@ -225,7 +275,9 @@ missing packages from `my-packages`."
  '(custom-safe-themes
    '("d2ab3d4f005a9ad4fb789a8f65606c72f30ce9d281a9e42da55f7f4b9ef5bfc6"
      default))
- '(package-selected-packages nil))
+ '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((ekilex :vc-backend Git :url "https://github.com/Jonte-P/ekilex.el"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
