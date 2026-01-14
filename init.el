@@ -68,7 +68,34 @@ missing packages from `my-packages`."
   "Enable Common Lisp tooling (SLIME/SLY, etc.)."
   :type 'boolean
   :group 'jp)
+(defcustom jp/enable-spellcheck nil
+  "Enable spell checking (Flyspell) using Hunspell if available."
+  :type 'boolean
+  :group 'jp)
+(defcustom my/spell-default-dictionary "en_US"
+  "Default dictionary for Hunspell/Flyspell."
+  :type 'string
+  :group 'jp)
 
+(defcustom jp/enable-spellcheck nil
+  "Enable spell checking using Hunspell (via Flyspell)."
+  :type 'boolean
+  :group 'jp)
+
+(defcustom jp/spell-default-dictionary "en_US"
+  "Default Hunspell dictionary code (e.g. \"en_US\", \"et_EE\", \"sv_SE\")."
+  :type 'string
+  :group 'jp)
+
+(defcustom jp/spell-enable-in-prog-modes t
+  "If non-nil, enable `flyspell-prog-mode` in programming buffers."
+  :type 'boolean
+  :group 'jp)
+
+(defcustom jp/spell-enable-in-text-modes t
+  "If non-nil, enable `flyspell-mode` in text buffers."
+  :type 'boolean
+  :group 'jp)
 
 ;;; ============================
 ;;; Package setup
@@ -257,6 +284,43 @@ missing packages from `my-packages`."
     :bind (:map lisp-mode-map
                 ("C-c C-z" . slime-switch-to-output-buffer))))
 
+;;; ===========================
+;;; Spelling
+;;; ===========================
+
+(defun jp/spell--hunspell-available-p ()
+  "Return non-nil if hunspell exists on this system."
+  (executable-find "hunspell"))
+
+(defun jp/spell-setup ()
+  "Configure Emacs spell checking to use Hunspell."
+  (unless (jp/spell--hunspell-available-p)
+    (user-error "jp spellcheck enabled, but hunspell not found in PATH"))
+
+  (setq ispell-program-name "hunspell")
+  (setq ispell-extra-args '("-a" "-i" "utf-8"))
+  (setq ispell-dictionary jp/spell-default-dictionary)
+
+  ;; Sync Emacs ispell settings
+  (ispell-set-spellchecker-params)
+
+  ;; Optional: makes hunspell handle multi-dicts more nicely
+  (when (fboundp 'ispell-hunspell-add-multi-dic)
+    (ispell-hunspell-add-multi-dic jp/spell-default-dictionary)))
+
+(defun jp/spell-enable ()
+  "Enable jp hunspell + flyspell according to jp options."
+  (when jp/enable-spellcheck
+    (jp/spell-setup)
+
+    (when jp/spell-enable-in-text-modes
+      (add-hook 'text-mode-hook #'flyspell-mode))
+
+    (when jp/spell-enable-in-prog-modes
+      (add-hook 'prog-mode-hook #'flyspell-prog-mode))))
+
+
+
 ;;; ============================
 ;;; Custom (managed by Emacs)
 ;;; ============================
@@ -270,8 +334,14 @@ missing packages from `my-packages`."
  '(custom-safe-themes
    '("d2ab3d4f005a9ad4fb789a8f65606c72f30ce9d281a9e42da55f7f4b9ef5bfc6"
      default))
+ '(ekilex-api-key "d60e1809e0674c129accb0a06b93dffa")
  '(jp/enable-common-lisp t)
- '(package-selected-packages nil)
+ '(jp/enable-spellcheck t)
+ '(jp/spell-default-dictionary "en_CA")
+ '(package-selected-packages
+   '(consult-eglot corfu-candidate-overlay devil ekilex flycheck-eglot
+		   go-mode kanagawa-themes marginalia quickrun
+		   restart-emacs slime vertico yasnippet))
  '(package-vc-selected-packages
    '((ekilex :vc-backend Git :url "https://github.com/Jonte-P/ekilex.el"))))
 (custom-set-faces
